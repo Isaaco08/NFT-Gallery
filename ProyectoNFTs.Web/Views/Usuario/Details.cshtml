@@ -1,0 +1,46 @@
+﻿@model ProyectoNFTs.Application.DTOs.UsuarioDTO
+
+<div class="container">
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Login)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Login)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.IdRol)
+        </dt>
+        <dd class="col-sm-7">
+            <div>@ViewBag.Rol.IdRol - @ViewBag.Rol.DescripcionRol</div>
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Password)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Password)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Nombre)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Nombre)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Apellidos)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Apellidos)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Estado)
+        </dt>
+        <dd class="col-sm-7">
+            @{
+                string estadoTexto = Model.Estado == 1 ? "Habilitado" : "Deshabilitado";
+            }
+            @Html.Raw(estadoTexto)
+        </dd>
+    </dl>
+</div>

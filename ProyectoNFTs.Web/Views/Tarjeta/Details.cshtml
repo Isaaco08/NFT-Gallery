@@ -1,0 +1,30 @@
+﻿@model ProyectoNFTs.Application.DTOs.TarjetaDTO
+
+<div class="container">
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-5">
+            @Html.DisplayNameFor(model => model.IdTarjeta)
+        </dt>
+        <dd class = "col-sm-7">
+            @Html.DisplayFor(model => model.IdTarjeta)
+        </dd>
+        <dt class = "col-sm-5">
+            @Html.DisplayNameFor(model => model.Descripcion)
+        </dt>
+        <dd class = "col-sm-7">
+            @Html.DisplayFor(model => model.Descripcion)
+        </dd>
+        <dt class = "col-sm-5">
+            @Html.DisplayNameFor(model => model.Estado)
+        </dt>
+        <dd class = "col-sm-7">
+            <!--@Html.DisplayFor(model => model.Estado)-->
+            @{
+                // Observe que @Model accede al model
+                string Estado = @Model.Estado ? "Habilitado" : "Desahabilitado";
+            }
+            @Html.Raw(Estado)
+        </dd>
+    </dl>
+</div>

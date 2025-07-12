@@ -1,0 +1,79 @@
+﻿@model IEnumerable<ProyectoNFTs.Application.DTOs.FacturaDetalleDTO>
+
+@if (Model != null && Model.Any())
+{
+    <div id="myCard">
+        <div class="card">
+            <div class="card-header">
+                <h5>Detalle</h5>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover table-bordered text-center" id="detalleFactura">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Secuencia)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.IdNft)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.NombreNFT)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Precio)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Cantidad)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.TotalLinea)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr class="idNft-@item.IdNft">
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Secuencia)
+                                </td>
+                                <td style="text-transform:uppercase">
+                                    @Html.DisplayFor(modelItem => item.IdNft)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NombreNFT)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Precio)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Cantidad)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TotalLinea)
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger" onclick="deleteProduct(@item.Secuencia)">Borrar</button>
+                                </td>
+                            </tr>
+                        }
+                        <!-- Add dummy row in order to show totals-->
+                        <tr>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center">
+                                @Model.Sum(p => p.TotalLinea).ToString("###,###.00")
+                            </td>
+                            <td align="center"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}

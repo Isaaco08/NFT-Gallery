@@ -1,0 +1,59 @@
+﻿@model ProyectoNFTs.Application.DTOs.ClienteDTO
+
+<div class="container">
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.IdCliente)
+        </dt>
+        <dd class="col-sm-7" style="text-transform:uppercase">
+            @Html.DisplayFor(model => model.IdCliente)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Nombre)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Nombre)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Apellido1)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Apellido1)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Apellido2)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Apellido2)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Sexo)
+        </dt>
+        <dd class="col-sm-7">
+            @{
+                string sexo = @Model.Sexo == 'M' ? "Masculino" : (@Model.Sexo == 'F' ? "Femenino" : "Otro");
+            }
+            @Html.Raw(sexo)
+        </dd>
+
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.FechaNacimiento)
+        </dt>
+        <dd class="col-sm-7">
+            @Html.DisplayFor(model => model.FechaNacimiento)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.IdPais)
+        </dt>
+        <dd class="col-sm-7">
+            <div>@ViewBag.Pais.IdPais - @ViewBag.Pais.Descripcion</div>
+        </dd>
+    </dl>
+</div>

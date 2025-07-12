@@ -1,0 +1,487 @@
+﻿@model ProyectoNFTs.Application.DTOs.FacturaEncabezadoDTO
+@{
+    ViewData["Title"] = "Factura";
+}
+<body id="MyBody">
+<div class="card">
+    <div class="card-header">
+        <!-- Factura
+         <button style="position: absolute; top: 0; right: 0" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#myModal" onclick="">Add Product</button>
+        -->
+        <div class="col-md-5">
+            <button class="btn btn-secondary" style="margin-left: 1em" onclick="onClearForm()">Nuevo</button>
+            @*ipu*@
+
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            @*-------------------------------------------CONTROLS FACTURA-------------------------------------------*@
+            <div class="col-md-4">
+                <form asp-action="Create" asp-controller="Factura" id="myForm"
+                      data-ajax="true"
+                      data-ajax-method="POST"
+                      data-ajax-begin="onBegin"
+                      data-ajax-failure="onFailure"
+                      data-ajax-success="onSuccess"
+                      data-ajax-complete="onComplete">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="col-md-12">
+                        <div class="mb-3" id="myControlForm">
+                            <label asp-for="IdFactura" class="control-label fw-normal text-dark"></label>
+                            <input asp-for="IdFactura" class="form-control" value="@ViewBag.CurrentReceipt" readonly />
+                            <span asp-validation-for="IdFactura" class="text-danger"></span>
+                        </div>
+
+                            <div class="mb-3" id="myControlForm">
+                            <label asp-for="IdTarjeta" class="control-label text-dark"></label>
+                            @Html.DropDownListFor(m => m.IdTarjeta,
+                                     new SelectList(ViewBag.ListTarjeta, "IdTarjeta", "Descripcion"), new { @class = "form-select" })
+                            <span asp-validation-for="IdTarjeta" class="text-danger"></span>
+                        </div>
+
+                            <div class="mb-3" id="myControlForm">
+                            <label asp-for="TarjetaNumero" class="control-label text-dark"></label>
+                            <input asp-for="TarjetaNumero" class="form-control"/>
+                            <span asp-validation-for="TarjetaNumero" class="text-danger"></span>
+                        </div>
+
+                            <div class="mb-3" id="myControlForm">
+                            <label asp-for="IdCliente" class="control-label text-dark"></label>
+                            <input asp-for="IdCliente" type="text" class="form-control" style="text-transform:uppercase" />
+                            <span asp-validation-for="IdCliente" class="text-danger"></span>
+                            <label id="NombreCliente" class="control-label fw-bold">-</label>
+                        </div>
+
+                            <div class="mb-3" id="myControlForm">
+                            <label></label>
+                            <input type="submit" value="Facturar" class="form-control btn btn-success" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+            @*-------------------------------------------FIN FACTURA-------------------------------------------*@
+
+            @*-------------------------------------------CONTROLS NFT-------------------------------------------*@
+            <div class="col-md-4">
+                <div id="myControlForm">
+                    <label class="text-dark">NFT</label>
+                    <input type="text" id="IdNft" class="form-control" autocomplete="off" style="text-transform:uppercase" />
+
+                </div>
+                <div id="myControlForm">
+                    <!-- <label >Cantidad Inventario</label>-->
+                    <input type="hidden" readonly id="CantidadEnInventario" class="form-control" />
+                </div>
+                <div id="myControlForm">
+                    <label class="text-dark">Cantidad</label>
+                    <input type="number" id="cantidad" class="form-control" min="1" max="1" onkeydown="return false" />
+                </div>
+                <div id="myControlForm">
+                    <label class="text-dark">Precio</label>
+                    <input type="number" id="precio" readonly class="form-control" />
+                </div>
+
+                <div id="myControlForm">
+                    <label></label>
+                    <button class="btn btn-primary form-control" onclick="addProduct()" id="btnAddNft">Agregar</button>
+                </div>
+            </div>
+            @*-------------------------------------------FIN CONTROLS-------------------------------------------*@
+
+            @*---------------------------------------------IMAGE NFT---------------------------------------------*@
+            <div class="col-md-4" style="padding:0;">
+                <div class="text-center" style="display:flex; flex-direction:column; justify-content:center; align-items:center;">
+                    <img src="/Images/nophoto.jpg" class="img-responsive" style="height:80%;width:80%; margin-top:30px;" id="ImgNft">
+                    <label id="NftNombre" class="control-label fw-bold">-</label>
+                    <div>
+                        <label id="NftNombre" name="NftNombre" class="fw-bold"></label>
+
+                        <!--Hidden field with stock-->
+                        <input type="hidden" id="CantidadEnInventario" />
+                    </div>
+                </div>
+            </div>
+            @*---------------------------------------------FIN IMAGE---------------------------------------------*@
+        </div>
+
+        <br />
+
+        <div class="row">
+            <div class="col-md-12"></div>
+            <div id="divDetalleFactura" class="px-3"></div>
+        </div>
+    </div>
+</div>
+</body>
+
+<!-- Div para spinner -->
+<div id="loader" class=""></div>
+
+@section Scripts {
+    <script>
+
+        ///////////////////////////////////////////////////////////////////
+        // Autocomplete Modal NftId search by Product Name
+        ///////////////////////////////////////////////////////////////////
+        $("#IdNft").autocomplete({
+            source: function (request, response) {
+                var id = $("#IdNft").val();
+                //debugger;
+
+                // default IMAGE NO-IMAGE
+                $("#ImgNft").attr("src", "/Images/nophoto.jpg");
+                // Clear Product Name
+                $("#NftNombre").html("")
+                $("#precio").val("");
+                $("#Cantidad").val("");
+                $("#CantidadEnInventario").val("");
+                $.ajax({
+                    type: "GET",
+                    url: "/Nft/GetNftByName",
+                    dataType: "json",
+                    data: { filtro: id },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+
+                            //debugger;
+                            return { label: item.nombre, value: item.idNft, data: item };
+                        }));
+                    },
+                    error: function (xhr, status, error) {
+                        // xhr.requestText
+                        // debugger;
+                        console.log(error)
+                        alert("Error: " + error + ", No Error: " + xhr.status);
+                    },
+                });
+            },
+            select: function (event, ui) {
+
+                // Show data
+                $("#IdNft").val(ui.item.value)
+                $("#NftNombre").html(ui.item.label + " - Inventario: " + ui.item.data.cantidad)
+                $("#precio").val(ui.item.data.precio)
+                $("#IdNft").focus();
+                // Show the image, it isn't necesary to convert to Base64 since it comes from Json
+                $("#ImgNft").attr("src", "data:image/jpeg;charset=utf-8;base64," + ui.item.data.imagen);
+                $("#CantidadEnInventario").val(ui.item.data.cantidad);
+                //$('.btn-success').prop('disabled', false);
+                return false;
+            }
+        });
+    </script>
+
+    <script>
+
+        ////////////////////////////////////////////////////
+        // Busca el cliente por nombre+apellido1+apellido2 //
+        /////////////////////////////////////////////////////
+
+        $("#IdCliente").autocomplete({
+            source: function (request, response) {
+                var idCliente = $("#IdCliente").val();
+                //debugger;
+                console.log(idCliente);
+                $.ajax({
+                    type: "GET",
+                    url: "/Cliente/GetClienteByName",
+                    dataType: "json",
+                    data: { filtro: idCliente },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            console.log(item);
+                            //debugger;
+                            return { label: item.nombre + " " + item.apellido1 + " " + item.apellido2, value: item.idCliente };
+                        }));
+                    },
+                    error: function (xhr, status, error) {
+                        // xhr.requestText
+                        // debugger;
+                        console.log(error)
+                        alert("Error: " + error + ", No Error: " + xhr.status);
+                    },
+                });
+            },
+            select: function (event, ui) {
+
+                $("#IdCliente").val(ui.item.value);
+                $("#NombreCliente").html(ui.item.label)
+
+                return false;
+            }
+        });
+    </script>
+
+    <script>
+        ///////////////////////////////////////////////////////////////////////////////////////////////
+        // Clear IdCliente and NombreCliente when they got the focus                                 //
+        ///////////////////////////////////////////////////////////////////////////////////////////////
+        $("#IdCliente").focus(function () {
+            // Limpia la caja de texto
+            $("#IdCliente").val("");
+            $("#NombreCliente").html("*")
+        });
+    </script>
+
+    <script>
+        // Validación de GUID
+        function esGuid(valor) {
+            // Expresión regular para verificar el formato de GUID
+            var guidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+            return guidRegex.test(valor);
+        }
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////
+        // Add cardshoping Product
+        ///////////////////////////////////////////////////////////////////////////////////////////////
+        function addProduct() {
+            let idNft = document.getElementById("IdNft").value;
+            let cantidad = document.getElementById("cantidad").value;
+            let precio = document.getElementById("precio").value;
+            let divDetalleFactura = document.getElementById("divDetalleFactura");
+            let cantidadEnInventario = document.getElementById("CantidadEnInventario").value;
+
+            // Verificar si ya existe un detalle con el mismo IdNft
+            let existingDetail = divDetalleFactura.querySelector(`.idNft-${idNft}`);
+            if (existingDetail) {
+                Swal.fire({
+                    title: "Error!",
+                    text: "Este NFT ya está en la factura!",
+                    icon: "error"
+                });
+                return;
+            }
+
+            if (idNft.trim() === "") {
+                Swal.fire({
+                    title: "Error!",
+                    text: "Ingrese el código del Nft!",
+                    icon: "error"
+                });
+                return;
+            }
+
+
+            // Validation
+            if (!esGuid(idNft)) {
+                Swal.fire({
+                    title: "Error!",
+                    text: "Ingrese el NFT!",
+                    icon: "error"
+                });
+                return;
+            }
+
+            // Validation
+            if ($.isNumeric(cantidad) == false) {
+                Swal.fire({
+                    title: "Error!",
+                    text: "Ingrese la cantidad!",
+                    icon: "error"
+                });
+
+                return;
+            }
+
+            // validation
+            if (parseInt(cantidad) <= 0) {
+                swal.fire({
+                    title: "Error!",
+                    text: "La cantidad debe ser mayor a cero!",
+                    icon: "error"
+                });
+                return;
+            }
+
+            // Validate stock?
+            if (parseInt(cantidad) > parseInt(CantidadEnInventario)) {
+
+                Swal.fire({
+                    title: "Error!",
+                    text: "Cantidad en inventario insuficiente!",
+                    icon: "error"
+                });
+                return;
+            }
+
+            const myRequest = "/Factura/AddProduct?id=" + idNft + "&cantidad=" + cantidad
+
+            const options = {
+                method: 'GET'
+            }
+
+            fetch(myRequest, options)
+                .then(function (response) {
+                    // Error?
+                    if (!response.ok) {
+                        // console.log(response)
+                        // Get error from promise and throw a Error Object
+                        return response.text().then(text => { throw new Error(text) })
+                    }
+                    // everthing goes well!
+                    return response.text();
+                })
+                .then((text) => {
+                    //console.log(results)
+                    divDetalleFactura.innerHTML = text
+                }).catch(error => {
+                    // show error
+                    Swal.fire({
+                        title: "Error",
+                        text: error,
+                        icon: "error"
+                    })
+
+                })
+
+
+            //detallefacturaBorrar.remove()
+            // Clear fields
+            $("#IdNft").val("");
+            $("#precio").val("");
+            $("#NftNombre").html("");
+            $("#cantidad").val("");
+            $("#CantidadEnInventario").val("");
+            $("#ImgNft").attr("src", "/Images/nophoto.jpg");
+            $('#btnAddNft').prop('disabled', true);
+        }
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////
+        // Delete item from Cardshop
+        ///////////////////////////////////////////////////////////////////////////////////////////////
+        function deleteProduct(secuence) {
+            console.log("Borrar " + secuence)
+            const divDetalleFactura = document.getElementById("divDetalleFactura");
+            const myRequest = "/Factura/DeleteProduct?id=" + secuence
+            const options = {
+                method: 'GET'
+            }
+            fetch(myRequest, options)
+                .then(function (response) {
+                    // Error?
+                    if (!response.ok) {
+                        // console.log(response)
+                        // Extraer error from promise and throw a Error Object
+                        return response.text().then(text => { throw new Error(text) })
+                    }
+                    // everthing goes well!
+                    return response.text();
+                })
+                .then((text) => {
+                    divDetalleFactura.innerHTML = text
+
+                }).catch(error => {
+                    // show error
+                    Swal.fire({
+                        title: "Error",
+                        text: error,
+                        icon: "error"
+                    })
+                })
+        }
+    </script>
+
+    <!------------------------------------------------------------------------------------------------->
+    <!--Ajax control -->
+    <script>
+        function onBegin() {
+            console.log("onBegin")
+            // Cuando se coloca loading en el nombre del class se inicia el spinner
+            // Este se define en el /css/site.css
+            document.getElementById("loader").className = "loading";
+        }
+
+        function onFailure(response) {
+            console.log("onFailure")
+            document.getElementById("loader").className = "";
+            Swal.fire({
+                title: "Error!",
+                text: response.responseText,
+                icon: "error"
+            });
+
+        }
+
+        function onSuccess(response) {
+            console.log("onSuccess");
+            document.getElementById("loader").className = "";
+
+            // Llama a la función para limpiar el formulario y realizar otras acciones
+            onClearForm();
+
+            Swal.fire({
+                title: 'Facturación realizada correctamente!!',
+                icon: 'success',
+                showConfirmButton: true, // No mostrar el botón de confirmación
+                timer: 2000,
+                timerProgressBar: true
+            });
+
+            // Espera 2 segundos antes de recargar la página
+            setTimeout(function () {
+                location.reload();
+            }, 2000);
+        }
+
+        function onComplete() {
+            console.log("Fin del proceso")
+            document.getElementById("loader").className = "";
+        }
+    </script>
+
+    <!-- Otros-->
+    <script>
+        function onClearForm() {
+            // Reset form (clear all fields)
+            document.getElementById("myForm").reset();
+
+            // Clear inputs and labels
+            document.getElementById("IdNft").value = "";
+            document.getElementById("CantidadEnInventario").value = "";
+            document.getElementById("cantidad").value = "";
+            document.getElementById("precio").value = "";
+            document.getElementById("NftNombre").innerHTML = "";
+            document.getElementById("NombreCliente").innerHTML = "";
+            // Reset image
+            document.getElementById("ImgNft").src = "/Images/nophoto.jpg";
+
+            // Delete table
+            document.getElementById("divDetalleFactura").innerHTML = "";
+
+            // Deshabilita el btn AddProduct
+            $('#btnAddNft').prop('disabled', true);
+        }
+
+
+        $(document).ready(function () {
+            // Deshabilita el botón al inicio
+            $('#btnAddNft').prop('disabled', true);
+
+            // Verifica el valor del campo "IdNft" cada vez que cambia
+            $('#IdNft').on('input', function () {
+                if ($(this).val().trim() === '') {
+                    // Si el campo "IdNft" está vacío, deshabilita el botón
+                    // Clear fields
+                    $("#IdNft").val("");
+                    $("#precio").val("");
+                    $("#NftNombre").html("");
+                    $("#cantidad").val("");
+                    $("#CantidadEnInventario").val("");
+                    // Clear image... NoPhoto
+                    $("#ImgNft").attr("src", "/Images/nophoto.jpg");
+                    $('#btnAddNft').prop('disabled', true);
+                } else {
+                    // Si el campo "IdNft" no está vacío, habilita el botón
+                    $('#btnAddNft').prop('disabled', false);
+                }
+            });
+        });
+
+
+    </script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

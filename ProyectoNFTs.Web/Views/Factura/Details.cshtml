@@ -1,0 +1,49 @@
+﻿@model ProyectoNFTs.Application.DTOs.FacturaEncabezadoDTO
+
+<div class="container">
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-5">
+            @Html.DisplayNameFor(model => model.IdFactura)
+        </dt>
+        <dd class = "col-sm-7">
+            @Html.DisplayFor(model => model.IdFactura)
+        </dd>
+        <dt class = "col-sm-5">
+            @Html.DisplayNameFor(model => model.IdTarjeta)
+        </dt>
+        <dd class="col-sm-7">
+            <div>@ViewBag.Tarjeta.IdTarjeta - @ViewBag.Tarjeta.Descripcion</div>
+        </dd>
+        <dt class = "col-sm-5">
+            @Html.DisplayNameFor(model => model.IdCliente)
+        </dt>
+        <dd class="col-sm-7">
+            <div>@ViewBag.Cliente.Nombre @ViewBag.Cliente.Apellido1</div>
+        </dd>
+        <dt class = "col-sm-5">
+            @Html.DisplayNameFor(model => model.TarjetaNumero)
+        </dt>
+        <dd class = "col-sm-7">
+            @Html.DisplayFor(model => model.TarjetaNumero)
+        </dd>
+        <dt class = "col-sm-5">
+            @Html.DisplayNameFor(model => model.EstadoFactura)
+        </dt>
+        <dd class="col-sm-7">
+            <!--@Html.DisplayFor(model => model.EstadoFactura)-->
+            @{
+                // Observe que @Model accede al model
+                string EstadoFactura = @Model.EstadoFactura == 1 ? "Activa" : "Anulada";
+            }
+            @Html.Raw(EstadoFactura)
+        </dd>
+        <dt class = "col-sm-5">
+            @Html.DisplayNameFor(model => model.FechaFacturacion)
+        </dt>
+        <dd class = "col-sm-7">
+            @Html.DisplayFor(model => model.FechaFacturacion)
+        </dd>
+    </dl>
+</div>
+

@@ -1,0 +1,89 @@
+﻿@{
+    ViewData["Title"] = "NFTPropietarioReport";
+}
+<body id="MyBody2">
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h4>Reporte de Propietario del NFT</h4>
+        </div>
+        <div class="card-body">
+            <form asp-controller="Reporte" asp-action="NFTPropietarioResultado" method="get"
+                  data-ajax-method="POST"
+                  data-ajax-begin="onBegin"
+                  data-ajax-failure="onFailure"
+                  data-ajax-success="onSuccess"
+                  data-ajax-complete="onComplete">               
+                <div class="d-flex flex-row-reverse">
+                    <button type="submit" class="btn btn-primary">
+                        <span class="bi bi-search"></span> Consultar
+                    </button>
+                    <div style="margin-right:10px;">                    
+                        <input type="text" name="descripcion" id="descripcion" class="form-control" autocomplete="off" placeholder="Nombre NFT" required/>                      
+                    </div>
+                </div>
+            </form>            
+        </div>
+    </div>
+</div>
+
+<br />
+<div id="contenedor"></div>
+<div id="loader" class="xxxx"></div>
+<br />
+</body>
+@section Scripts {
+    <script>
+
+        ///////////////////////////////////////////////////////////////////
+        // Autocomplete Modal NftId search by Product Name
+        ///////////////////////////////////////////////////////////////////
+        $("#descripcion").autocomplete({
+            source: function (request, response) {
+                var id = $("#descripcion").val();
+     
+                //debugger;     
+                $("#NftNombre").html("")
+                $.ajax({
+                    type: "GET",
+                    url: "/Nft/GetNftByName",
+                    dataType: "json",
+                    data: { filtro: id },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            //debugger;
+                            return { label: item.nombre, value: item.descripcion, data: item };
+                        }));
+                    },
+                    error: function (xhr, status, error) {
+                        // xhr.requestText
+                        // debugger;
+                        console.log(error)
+                        alert("Error: " + error + ", No Error: " + xhr.status);
+                    },
+                });
+            },
+      
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            // Verificar si hay un mensaje de error y mostrarlo en un toast
+            var errorMessage = "@ViewBag.ErrorMessage";
+            if (errorMessage) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: errorMessage
+                });
+            }
+
+        });
+    </script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

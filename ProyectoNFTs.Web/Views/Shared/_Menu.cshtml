@@ -1,0 +1,109 @@
+﻿@{
+    // Obtener el nombre completo del claim (sin incluir el login)
+    var userFullName = User.Identity.Name;
+
+    // Si el nombre completo contiene el login, lo eliminamos
+    var loginIndex = userFullName.LastIndexOf(" ");
+    if (loginIndex != -1)
+    {
+        userFullName = userFullName.Substring(0, loginIndex);
+    }
+
+    // Dividir el nombre completo en nombre y apellidos
+    var userNameParts = userFullName.Split(' ');
+    var firstName = userNameParts[0]; // El primer segmento es el nombre
+    var lastName = string.Join(" ", userNameParts.Skip(1)); // Los siguientes segmentos son los apellidos
+}
+
+<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light  bg-black border-bottom box-shadow mb-3">
+    <div class="container-fluid">
+        <a class="navbar-brand text-light" asp-area="" asp-controller="Home" asp-action="Index">Galería de NFTs</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <!--bg-light backgroud icon -->
+            <span class="navbar-toggler-icon bg-light"></span>
+        </button>
+        <div class="navbar-collapse collapse   d-sm-inline-flex justify-content-between">
+            <ul class="navbar-nav flex-grow-1">
+
+                @if (User.IsInRole("Admin") == true || User.IsInRole("Manager") == true)
+                {
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Mantenimientos
+                        </a>
+                        <ul class="dropdown-menu bg-black text-light" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item text-light" href="@Url.Action("Index","Cliente")">Cliente </a></li>
+                            <li><a class="dropdown-item text-light" href="@Url.Action("Index","Tarjeta" )">Tarjeta </a></li>
+                            <li><a class="dropdown-item text-light" href="@Url.Action("Index","NFT" )">NFT </a></li>
+                            <li><a class="dropdown-item text-light" href="@Url.Action("Index","Pais" )">País </a></li>
+                        </ul>
+                    </li>
+                }
+
+                @if (User.IsInRole("Admin") == true || User.IsInRole("Manager") == true)
+                {
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Procesos
+                        </a>
+                        <ul class="dropdown-menu bg-black text-light" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item text-light" href="@Url.Action("Index", "Factura")">Realizar Factura</a></li>
+                            <li><a class="dropdown-item text-light" href="@Url.Action("Anular", "Factura" )">Anular Factura</a></li>
+                        </ul>
+                    </li>
+                }
+
+                @if (User.IsInRole("Admin") == true || User.IsInRole("Cashier") == true)
+                {
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Reportes
+                        </a>
+                        <ul class="dropdown-menu bg-black text-light" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item text-light" href="@Url.Action("ClienteReport", "Reporte" )">Clientes </a></li>
+                            <li><a class="dropdown-item text-light" href="@Url.Action("NFTPropietarioReport", "Reporte" )">Propietario NFT </a></li>
+                            <li><a class="dropdown-item text-light" href="@Url.Action("VentasReport", "Reporte")">Ventas</a></li>
+                            <li><a class="dropdown-item text-light" href="@Url.Action("NFTReport", "Reporte")">NFT</a></li>
+                            <li><hr class="dropdown-divider text-light"></li>
+                            <li><a class="dropdown-item text-light" href="@Url.Action("VentasGraficoReport", "Reporte")">Grafico de Ventas</a></li>
+
+                        </ul>
+                    </li>
+                }
+
+                @if (User.IsInRole("Admin") == true)
+                {
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Seguridad
+                        </a>
+                        <ul class="dropdown-menu bg-black text-light" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item text-light" href="@Url.Action("Index", "Usuario")">Usuario</a></li>
+
+                        </ul>
+                    </li>
+                }
+
+                 <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Ayuda
+                        </a>
+                        <ul class="dropdown-menu bg-black text-light" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item text-light" href="@Url.Action("Ayuda", "Home")">Calificar</a></li>
+
+                        </ul>
+                    </li>
+
+                <li class="nav-item">
+                    <a class="nav-link text-light" asp-area="" asp-controller="Login" asp-action="LogOff">Salir</a>
+                </li>
+            </ul>
+        </div>
+        <div class="d-flex align-items-center justify-content-center">
+
+            <p class="text-light" style="margin-bottom: 0; margin-top: 0;margin-right:10px; font-size: 19px;">@firstName @lastName</p>         
+            <i class="bi bi-person-circle text-light" style="font-size: 32px;"></i>
+        </div>
+    </div>
+</nav>

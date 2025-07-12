@@ -1,0 +1,87 @@
+﻿@{
+    ViewData["Title"] = "Reporte de Ventas";
+}
+
+<body id="MyBody2">
+<div class="container">
+    <div class="card">
+        <h5 class="card-header">Ventas</h5>
+        <div class="card-body">
+            <form class="row g-3" asp-action="VentasReportPDF"
+                  asp-controller="Reporte"
+                  method="post"
+                  asp-antiforgery="true" onsubmit="return validateForm()">
+
+                <div style="display:flex; align-items:center;">
+                    <!-- Campo Fecha de Inicio -->
+                    <div class="col-3" style="margin:5px">
+                        <label for="FechaInicio" class="form-label">Fecha Inicio:</label>
+                        <input type="datetime-local" class="form-control" id="FechaInicio" name="fechaInicial" required>
+                    </div>
+
+                    <!-- Campo Fecha Final -->
+                    <div class="col-3" style="margin:5px">
+                        <label for="FechaFinal" class="form-label">Fecha Final:</label>
+                        <input type="datetime-local" class="form-control" id="FechaFinal" name="fechaFinal" required>
+                    </div>
+
+                    <div class="col-3" style="margin:5px;margin-top:35px;">
+                        <button type="submit" class="btn btn-primary">Consultar</button>
+                    </div>
+                </div>
+
+            </form>
+
+            <br />
+            @if (ViewBag.Message != null)
+            {
+                <div class="alert alert-danger" id="Message" role="alert">
+                    @ViewBag.Message
+                </div>
+            }
+        </div>
+
+        <!-- Aquí puedes colocar tu gráfico u otros elementos relacionados con el reporte -->
+    </div>
+</div>
+</body>
+
+@section scripts {
+    <script>
+
+
+        function validateForm() {
+            var fechaInicio = document.getElementById('FechaInicio').value;
+            var fechaFinal = document.getElementById('FechaFinal').value;
+
+            if (fechaInicio > fechaFinal) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Error!",
+                    text: "Error! La fecha inicial no puede ser mayor a la fecha final."
+                });
+                return false; // Evita enviar el formulario
+            }
+
+            return true; // Permite enviar el formulario si las fechas son válidas
+        }
+    </script>
+    <script>
+        $(document).ready(function () {
+            // Verificar si hay un mensaje de error y mostrarlo en un toast
+            var errorMessage = "@ViewBag.ErrorMessage";
+            if (errorMessage) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: errorMessage
+                });
+            }
+
+
+        });
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

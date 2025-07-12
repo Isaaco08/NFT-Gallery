@@ -1,0 +1,126 @@
+﻿@model ProyectoNFTs.Application.DTOs.UsuarioDTO
+
+@{
+    ViewData["Title"] = "Create";
+}
+<body id="MyBody2">
+<div class="card">
+    <div class="card-header bg-black text-light">
+        <h5>Usuario - Agregar</h5>
+    </div>
+    <div class="row mx-2 my-2">
+        <div class="col-md-4">
+            <form asp-action="Create" asp-controller="Usuario"
+                  data-ajax="true"
+                  data-ajax-method="POST"
+                  data-ajax-begin="onBegin"
+                  data-ajax-failure="onFailure"
+                  data-ajax-success="onSuccess"
+                  data-ajax-complete="onComplete">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Login" class="control-label"></label>
+                    <input asp-for="Login" class="form-control" />
+                    <span asp-validation-for="Login" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password" class="control-label"></label>
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="IdRol" class="control-label"></label>
+                    @Html.DropDownListFor(m => m.IdRol,
+                             new SelectList(ViewBag.ListRol, "IdRol", "DescripcionRol"), new { @id = "IdRol", @class = "form-select" })
+
+                    <span asp-validation-for="IdRol" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Nombre" class="control-label"></label>
+                    <input asp-for="Nombre" class="form-control" />
+                    <span asp-validation-for="Nombre" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Apellidos" class="control-label"></label>
+                    <input asp-for="Apellidos" class="form-control" />
+                    <span asp-validation-for="Apellidos" class="text-danger"></span>
+                </div>
+                <div class="form-grou">
+                    <label asp-for="Estado" class="control-label">Estado</label>
+                    <!--https://www.completecsharptutorial.com/asp-net-mvc5/html-radiobutton-and-html-radiobuttonfor-example-in-asp-net-mvc.php -->
+                    <div class="radio-buttons">
+                        Habilitado: @Html.RadioButtonFor(m => m.Estado, 1, new { @value = 1 })
+                        Deshabilitado: @Html.RadioButtonFor(m => m.Estado, 0, new { @value = 0 })
+                    </div>
+                    <span asp-validation-for="Estado" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Agregar" class="btn btn-primary" /> |
+                    <a asp-action="Index" class="btn btn-dark">
+                        <span class="bi bi-arrow-left"></span> Regresar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+<!-- Div para spinner -->
+<div id="loader" class=""></div>
+
+
+@section scripts {
+    <script>
+        function onBegin() {
+            console.log("onBegin")
+            // Cuando se coloca loading en el nombre del class se inicia el spinner
+            // Este se define en el /css/site.css
+            document.getElementById("loader").className = "loading";
+        }
+
+        function onFailure(response) {
+            console.log()
+
+            document.getElementById("loader").className = "";
+        }
+
+        function onSuccess(response) {
+            console.log("onSuccess");
+            if (response.success) {
+                Swal.fire({
+                    title: '¡Registro agregado correctamente!',
+                    icon: 'success',
+                    showConfirmButton: true, // No mostrar el botón de confirmación
+                    timer: 2000,
+                    timerProgressBar: true
+                }).then(() => {
+                    // Redirigir a la vista "Index" después de que el usuario cierre el SweetAlert
+                    window.location.href = '/Usuario/Index'; // Reemplaza 'Usuario' con el nombre de tu controlador
+                });
+            } else {
+                // Mostrar mensaje de error con el ID de la Usuario
+                Swal.fire({
+                    title: '¡Error!',
+                    html: 'El Usuario con login <strong>' + response.login + '</strong> ya existe.',
+                    icon: 'error',
+                    showConfirmButton: true,
+                    timer: 4000,
+                    timerProgressBar: true
+                });
+            }
+        }
+
+        function onComplete() {
+            console.log("onComplete")
+            // Se cambia el nombre del class al loader. Con esto se detiene el spinner
+            document.getElementById("loader").className = "";
+
+        }
+    </script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

@@ -1,0 +1,191 @@
+﻿@{
+    ViewData["Title"] = "Grafico Ventas";
+}
+
+<body id="MyBody2">
+<div class="container">
+    <div class="card">
+        <h5 class="card-header">Gráfico de Ventas</h5>
+        <div class="card-body">
+            <form class="row g-3" asp-action="GraficoReport"
+                  asp-controller="Reporte"
+                  method="post"
+                  asp-antiforgery="true" onsubmit="return validateForm()">
+
+                <!-- Campo Fecha de Inicio -->
+                <div class="col-3">
+                    <label for="FechaInicio" class="form-label">Fecha Inicio:</label>
+                    <input type="datetime-local" class="form-control" id="FechaInicio" name="fechaInicial" required>
+                </div>
+
+                <!-- Campo Fecha Final -->
+                <div class="col-3">
+                    <label for="FechaFinal" class="form-label">Fecha Final:</label>
+                    <input type="datetime-local" class="form-control" id="FechaFinal" name="fechaFinal" required>
+                </div>
+
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary">Consultar</button>
+                </div>
+            </form>
+
+            <br />
+            @if (ViewBag.Message != null)
+            {
+                <div class="alert alert-danger" id="Message" role="alert">
+                    @ViewBag.Message
+                </div>
+            }
+        </div>
+
+        <div class="container p-10">
+            <div class="chart-container" style="position: relative; margin:auto; height:60vh; width:50vw">
+                <canvas id="myChart1"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+@section scripts {
+
+
+    <script type="text/javascript">
+
+        function clearMessage() {
+            let divMessage = document.getElementById("Message");
+            // timeout to clear message
+            if (divMessage != null)
+                setTimeout(() => { divMessage.remove(); }, 3000);
+            console.log("bye");
+        }
+
+        clearMessage();
+
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            // Verificar si hay un mensaje de error y mostrarlo en un toast
+            var errorMessage = "@ViewBag.ErrorMessage";
+            if (errorMessage) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: errorMessage
+                });
+            }
+
+            Bar(); // Llamar a la función Bar para generar el gráfico
+        });
+    </script>
+
+    <script>
+        function validateForm() {
+            var fechaInicio = document.getElementById('FechaInicio').value;
+            var fechaFinal = document.getElementById('FechaFinal').value;
+
+            if (fechaInicio > fechaFinal) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Error!",
+                    text: "Error! La fecha inicial no puede ser mayor a la fecha final."
+                });
+                return false; // Evita enviar el formulario
+            }
+        
+
+            return true; // Permite enviar el formulario si las fechas son válidas
+        }
+
+        $(document).ready(function () {
+            Bar();
+        });
+
+        function Bar() {
+            if ("@ViewBag.Valores" == "")
+                return;
+
+            // find myChart Div
+            const ctx = document.getElementById('myChart1');
+            // Get Values
+            let yValues = [@ViewBag.Valores];
+            // Get Etiquetas
+            let etiquetas = "@ViewBag.Etiquetas"
+            console.log(etiquetas)
+
+            // Convert to Array
+            let etiquetasArray = etiquetas.split(",");
+
+            // options
+            var options = {
+                maintainAspectRatio: true,
+                scales: {
+                    y: {
+                        stacked: true,
+                        grid: {
+                            display: true,
+                            color: "rgba(255,99,132,0.2)"
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            };
+
+            new Chart(ctx, {
+                type: 'bar',
+                options: options,
+                data: {
+                    labels: etiquetasArray,
+                    datasets: [{
+                        label: '@ViewBag.GraphTitle',
+                        data: yValues,
+                        borderWidth: 1,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(255, 159, 64, 0.2)',
+                            'rgba(255, 205, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(255, 159, 64, 0.2)',
+                            'rgba(255, 205, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(201, 203, 207, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgb(255, 99, 132)',
+                            'rgb(255, 159, 64)',
+                            'rgb(255, 205, 86)',
+                            'rgb(75, 192, 192)',
+                            'rgb(54, 162, 235)',
+                            'rgb(153, 102, 255)',
+                            'rgb(255, 99, 132)',
+                            'rgb(255, 159, 64)',
+                            'rgb(255, 205, 86)',
+                            'rgb(75, 192, 192)',
+                            'rgb(54, 162, 235)',
+                            'rgb(153, 102, 255)',
+                            'rgb(201, 203, 207)'
+                        ],
+                        borderWidth: 1
+                    }]
+                }
+            });
+
+        }
+
+    </script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

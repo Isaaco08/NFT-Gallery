@@ -1,0 +1,119 @@
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Web.Common
+@model IEnumerable<ProyectoNFTs.Application.DTOs.FacturaEncabezadoDTO>
+
+@{
+    ViewData["Title"] = "Anular";
+}
+<body id="MyBody">
+<!-- Se requiere cuando la página debe estar cargada completamente,
+     osea con un inicio "defer" (atrazado)
+     https://stackoverflow.com/questions/807878/how-to-make-javascript-execute-after-page-load
+     -->
+<script src="/js/cliente.js" asp-append-version="true"></script>
+
+<h1>Listado de Facturas</h1>
+<div class="table-responsive">
+    <table id="sortable" class="table table-striped table-hover table-responsive-md table-sm mt-3" style="border-radius: 6px; overflow: hidden; font-size:medium">
+        <thead style="background-color: black; color: #fff; cursor:pointer ; height: 50px;text-align: left; vertical-align: middle;">
+            <tr>
+                <th onclick="sortBy(0)" style="cursor:pointer">
+                    @Html.DisplayNameFor(model => model.IdFactura)
+                </th>
+                <th onclick="sortBy(1)" style="cursor:pointer">
+                    @Html.DisplayNameFor(model => model.IdCliente)
+                </th>
+                <th onclick="sortBy(3)" style="cursor:pointer">
+                    @Html.DisplayNameFor(model => model.NombreCliente)
+                </th>
+                <th onclick="sortBy(4)" style="cursor:pointer">
+                    @Html.DisplayNameFor(model => model.FechaFacturacion)
+                </th>
+                <th onclick="sortBy(5)" style="cursor:pointer">
+                    @Html.DisplayNameFor(model => model.EstadoFactura)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr style="background-color: white">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IdFactura)
+                    </td>
+                    <td style="text-transform:uppercase;">
+                        @Html.DisplayFor(modelItem => item.IdCliente)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NombreCliente)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FechaFacturacion)
+                    </td>
+                    <td>
+                        @{
+                            string estado = item.EstadoFactura == 1 ? "Activa" : "Anulada";
+                            @Html.Raw(estado)
+                            ;
+                        }
+                    </td>
+                    <td>
+                        <div class="btn container">
+                            <a data-ajax="true" class="btn btn-secondary bi-eye-fill"
+                               data-ajax-complete="onComplete"
+                               data-ajax-mode="replace"
+                               href='@Url.Action("Details", "Factura", new { id  = item.IdFactura })'>
+                                Detalles
+                            </a> |
+                            @if (item.EstadoFactura == 1)
+                            {
+                                @Html.ActionLink("Anular", "Edit", new { id = item.IdFactura }, new { @class = "btn btn-danger bi bi-trash   " })
+                            }
+                            else
+                            {
+                                <button type="button" class="btn btn-danger bi bi-trash" disabled>Anular</button>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+    @Html.PagedListPager((IPagedList)Model, page =>
+            Url.Action("Anular", new { page }), new PagedListRenderOptions
+    {
+        Display = PagedListDisplayMode.Always,
+        MaximumPageNumbersToDisplay = 5,
+        LiElementClasses = new String[] { "page-item" },
+        PageClasses = new String[] { "page-link" }
+    })
+</div>
+</body>
+<div id="showData"></div>
+
+@section scripts {
+
+    <script type="text/javascript">
+        function onComplete(data) {
+            Swal.fire({
+                title: 'Detalle ',
+                html: data.responseText,
+                showDenyButton: false,
+
+                showCancelButton: false,
+                timer: 5000,
+                timerProgressBar: true
+            })
+        }
+    </script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+

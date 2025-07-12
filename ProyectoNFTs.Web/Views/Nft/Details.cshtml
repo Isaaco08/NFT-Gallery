@@ -1,0 +1,41 @@
+﻿@model ProyectoNFTs.Application.DTOs.NftDTO
+
+<div class="container nft-container">
+    <div class="nft-image">
+        <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Imagen)" alt="Imagen NFT" style="width: 300px; height: 300px;" />
+    </div>
+    <div class="nft-details">
+        <dl class="row">
+            <dt class="col-sm-5">
+                @Html.DisplayNameFor(model => model.IdNft)
+            </dt>
+            <dd class="col-sm-7" style="text-transform:uppercase">
+                @Html.DisplayFor(model => model.IdNft)
+            </dd>
+            <dt class="col-sm-5">
+                @Html.DisplayNameFor(model => model.Nombre)
+            </dt>
+            <dd class="col-sm-7">
+                @Html.DisplayFor(model => model.Nombre)
+            </dd>
+            <dt class="col-sm-5">
+                @Html.DisplayNameFor(model => model.Autor)
+            </dt>
+            <dd class="col-sm-7">
+                @Html.DisplayFor(model => model.Autor)
+            </dd>
+            <dt class="col-sm-5">
+                @Html.DisplayNameFor(model => model.Precio)
+            </dt>
+            <dd class="col-sm-7">
+                @Html.DisplayFor(model => model.Precio)
+            </dd>
+            <dt class="col-sm-5">
+                @Html.DisplayNameFor(model => model.Cantidad)
+            </dt>
+            <dd class="col-sm-7">
+                @Html.DisplayFor(model => model.Cantidad)
+            </dd>
+        </dl>
+    </div>
+</div>

@@ -1,0 +1,370 @@
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px; /* Margen inferior de 60px */
+   
+}
+
+#MyBody {
+    margin-bottom: 60px;
+    background: linear-gradient(270deg, rgb(3, 19, 51), rgb(255, 0, 110), rgb(3, 19, 51));
+    color: white;
+    animation: highFrequencyShift 10s infinite linear;
+}
+
+#MyBody2 {
+    margin-bottom: 60px;
+    background: linear-gradient(270deg, rgb(3, 19, 51), rgb(255, 0, 110), rgb(3, 19, 51));
+    color: black;
+    animation: highFrequencyShift 10s infinite linear;
+}
+
+@keyframes highFrequencyShift {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+
+.btn-container {
+    display: flex;
+    justify-content: space-between; /* Ajusta el espaciado entre los botones */
+    align-items: center; /* Alinea verticalmente los botones */
+}
+
+.btn {
+    margin-right: 1px; /* Ajusta el margen derecho entre los botones */
+    margin-left: 1px;
+    border-width: 1px; /* Reducir el grosor del borde */
+    padding: 0.350rem 0.75rem; /* Reducir el relleno del botón */
+}
+
+.radio-buttons {
+    margin-left: 30px; /* Ajusta el valor según sea necesario */
+}
+
+.form-group {
+    margin-bottom: 10px; /* Puedes ajustar este valor según la separación deseada */
+    margin-top: 10px;
+}
+
+#myControlForm {
+    margin-bottom: 10px; /* Puedes ajustar este valor según la separación deseada */
+    margin-top: 10px;
+}
+
+/* Hacer + grande a imagen sobre la image */
+.zoom {
+}
+
+    .zoom:hover {
+        transform: scale(2.5);
+    }
+
+.zoom2 {
+}
+
+    .zoom2:hover {
+        transform: scale(2.1);
+    }
+
+/*  fin  */
+
+/* this is needed to make the content scrollable on larger screens */
+@media (min-width: 576px) {
+    .h-sm-100 {
+        height: 100%;
+    }
+}
+
+.nft-container {
+    text-align: center;
+}
+
+.nft-image {
+    display: block;
+    margin: 0 auto;
+}
+
+.nft-details {
+    display: flex;
+    justify-content: center;
+    /* text-align: left;*/
+    margin-top: 20px; /* Espacio entre la imagen y los detalles */
+}
+
+/* Absolute Center Spinner  28-01-2024
+   https://codepen.io/charlyarg/pen/GByKja
+*/
+.loading {
+    position: fixed;
+    z-index: 999;
+    margin: auto;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 50px;
+    height: 50px;
+}
+
+    /* Transparent Overlay */
+    .loading:before {
+        content: '';
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255,255,255,0.5);
+    }
+
+    /* :not(:required) hides these rules from IE9 and below */
+    .loading:not(:required) {
+        /* hide "loading..." text */
+        font: 0/0 a;
+        color: transparent;
+        text-shadow: none;
+        background-color: transparent;
+        border: 0;
+    }
+
+        .loading:not(:required):after {
+            content: '';
+            display: block;
+            font-size: 10px;
+            width: 120px;
+            height: 120px;
+            margin-top: -0.5em;
+            border: 15px solid rgba(33, 150, 243, 1.0);
+            border-radius: 50%;
+            border-bottom-color: transparent;
+            /*Colors
+            border-top: 16px solid blue;
+            border-right: 16px solid green;
+            border-bottom: 16px solid red;
+             */
+            -webkit-animation: spinner 1s linear 0s infinite;
+            animation: spinner 1s linear 0s infinite;
+        }
+
+/* Animation */
+
+@-webkit-keyframes spinner {
+    0% {
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@-moz-keyframes spinner {
+    0% {
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@-o-keyframes spinner {
+    0% {
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes spinner {
+    0% {
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+
+/*===== SLIDER BTN =====*/
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+
+}
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+
+    }
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 15px;
+}
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        transition: .4s;
+        border-radius: 50%;
+    }
+
+input:checked + .slider {
+    background-color: green;
+}
+
+    input:checked + .slider:before {
+        transform: translateX(26px);
+    }
+
+
+
+/*===== SLIDER THREE =====*/
+.slider-three {
+    background-color: var(--light-2);
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+    .slider-three .section-title .title {
+        font-size: 44px;
+        line-height: 55px;
+        font-weight: 600;
+        color: var(--black);
+    }
+
+@media (max-width: 767px) {
+    .slider-three .section-title .title {
+        font-size: 28px;
+        line-height: 32px;
+    }
+}
+
+.slider-three .section-title .text {
+    color: var(--dark-3);
+    margin-top: 15px;
+}
+
+.slider-three .slider-items-wrapper {
+    position: relative;
+}
+
+    .slider-three .slider-items-wrapper .tns-nav {
+        width: 100%;
+        z-index: 2;
+        display: flex;
+        justify-content: center;
+        margin-top: 40px;
+    }
+
+        .slider-three .slider-items-wrapper .tns-nav button {
+            width: 10px;
+            height: 10px;
+            border-radius: 50px;
+            background-color: var(--primary);
+            opacity: 0.5;
+            border: 0;
+            margin: 0 5px;
+            -webkit-transition: all 0.4s ease-out 0s;
+            -moz-transition: all 0.4s ease-out 0s;
+            -ms-transition: all 0.4s ease-out 0s;
+            -o-transition: all 0.4s ease-out 0s;
+            transition: all 0.4s ease-out 0s;
+        }
+
+            .slider-three .slider-items-wrapper .tns-nav button.tns-nav-active {
+                width: 20px;
+                opacity: 1;
+                border-radius: 5px;
+            }
+
+.slider-three .single-items-one {
+    margin-top: 10px;
+}
+
+    .slider-three .single-items-one img {
+        width: 100%;
+       
+        box-shadow: var(--shadow-2);
+        border-radius: 10px;
+    }

@@ -1,0 +1,79 @@
+﻿@model IEnumerable<ProyectoNFTs.Application.DTOs.ClienteDTO>
+
+<form id="myForm"
+      asp-action="ClienteReportPDF"
+      asp-controller="Reporte"
+      asp-antiforgery="true"
+      method="post"
+      asp-antiforgery="true">
+    <button type="submit" class="btn btn-primary">Descargar Reporte</button>
+</form>
+<body id="MyBody">
+<h1>Reporte de Clientes</h1>
+<div class="table-responsive">
+    <table id="sortable" class="table table-striped table-hover table-responsive-md table-sm mt-3" style="border-radius: 6px; overflow: hidden; font-size:medium">
+        <thead style="background-color: black; color: #fff; cursor:pointer ; height: 50px;text-align: left; vertical-align: middle;">
+            <tr>
+                <th onclick="sortBy(0)" style="cursor:pointer">
+                    @Html.DisplayNameFor(model => model.IdCliente)
+                </th>
+                <th onclick="sortBy(1)" style="cursor:pointer">
+                    @Html.DisplayNameFor(model => model.Nombre)
+                </th>
+                <th onclick="sortBy(2)" style="cursor:pointer">
+                    @Html.DisplayNameFor(model => model.Apellido1)
+                </th>
+                <th onclick="sortBy(3)" style="cursor:pointer">
+                    @Html.DisplayNameFor(model => model.Apellido2)
+                </th>
+                <th onclick="sortBy(4)" style="cursor:pointer">
+                    Correo Eletrónico
+                </th>
+                <th onclick="sortBy(5)" style="cursor:pointer">
+                    @Html.DisplayNameFor(model => model.Sexo)
+                </th>
+                <th onclick="sortBy(6)" style="cursor:pointer">
+                    F. Nacimiento
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr style="background-color: white">
+                    <td style="text-transform:uppercase">
+                        @if (item.IdCliente != Guid.Empty)
+                        {
+                            @item.IdCliente.ToString().Substring(0, 16)
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nombre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Apellido1)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Apellido2)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @{
+                            string sexo = item.Sexo.Equals('F') ? "Femenino" : "Masculino";
+                            @Html.Raw(sexo)
+                            ;
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FechaNacimiento)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+</body>
+
+

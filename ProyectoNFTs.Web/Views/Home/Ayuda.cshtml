@@ -1,0 +1,252 @@
+﻿@{
+    ViewData["Title"] = "Ayuda";
+}
+
+
+<title>Ayuda</title>
+
+<!-- Agregar Toastr CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+
+<!-- Agregar Toastr JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+<!-- Agregar jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<style>
+    .header {
+        text-align: center;
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-around;
+
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #82b1ff;
+        color: white;
+    }
+
+    tr:nth-child(even) {
+        background-color: #0d47a1;
+        color: white;
+    }
+
+    .total-row {
+        font-weight: bold;
+    }
+
+    .percentage {
+        text-align: right;
+    }
+
+    #myInput {
+        width: 100%;
+        height: 50px;
+        font-size: 15.5px;
+        border-radius: 8px;
+    }
+</style>
+
+<div class="card">
+    <div class="card-header" style="background-color:#0d47a1; color:white; border: 1px solid black; border-bottom:none;">
+        <h1 style="text-align:center;">Tabla de clasificación</h1>
+        <div class="header">
+            <div style="display:flex;flex-direction:column;">
+                <h4>Cédula:</h4>
+                <h5><strong>901180450</strong></h5>
+            </div>
+            <div style="display:flex;flex-direction:column;">
+                <h4>Nombre:</h4>
+                <h5><strong>Isaac Alvarado Toruño</strong></h5>
+            </div>
+            <div style="display:flex;flex-direction:column;">
+                <h4>Fecha:</h4>
+                <h5><strong>16/04/2024</strong></h5>
+            </div>
+        </div>
+    </div>
+    <div class="card-body" style="padding:0;">
+        <table>
+            <tr>
+
+                <th>Puntos a Evaluar</th>
+                <th>Puntos</th>
+                <th>Autoevaluación</th>
+                <th>Calificación del Profesor</th>
+            </tr>
+            <!-- Añade las filas aquí basadas en los datos OCR -->
+            <tr>
+                <td><strong>Registros Ejemplo</strong></td>
+                <td>10 pts</td>
+                <td>10 pts</td>
+                <td style="padding:5px;">
+                    <input id="myInput" onkeydown="return false" type="number" min="0" placeholder="Puntos Obtenidos" max="10" />
+                </td>
+
+            </tr>
+            <tr>
+                <td style="width:400px">Diseño de la Arquitectura del Software, estándares serilog, mensaje toastr, control de errores.</td>
+                <td>10 pts</td>
+                <td>10 pts</td>
+                <td style="padding:5px;">
+                    <input onkeydown="return false" type="number" min="0" id="myInput" placeholder="Puntos Obtenidos" max="10" />
+                </td>
+
+            </tr>
+            <tr>
+                <td><strong>Seguridad</strong></td>
+                <td>5 pts</td>
+                <td>5 pts</td>
+                <td style="padding:5px;">
+                    <input onkeydown="return false" type="number" min="0" id="myInput" placeholder="Puntos Obtenidos" max="5" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>Mantenimientos</strong>
+                    <ul>
+                        <li>Cliente 5 pts</li>
+                        <li>Activos NFT 10 pts</li>
+                        <li>Tarjetas 5 pts</li>
+                        <li>País 5 pts</li>
+                    </ul>
+                </td>
+                <td>25 pts</td>
+                <td>25 pts</td>
+                <td style="padding:5px;">
+                    <input onkeydown="return false" type="number" min="0" id="myInput" placeholder="Puntos Obtenidos" max="25" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>Procesos</strong>
+                    <ul>
+                        <li>Venta NFT 10 pts</li>
+                        <li>Anulación 5 pts</li>
+                        <li>Cambio Propietario NFT 5 pts</li>
+                    </ul>
+                </td>
+                <td>20 pts</td>
+                <td>20 pts</td>
+                <td style="padding:5px;">
+                    <input onkeydown="return false" type="number" min="0" id="myInput" placeholder="Puntos Obtenidos" max="20" />
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <strong>Rest API</strong>
+                    <ul>
+                        <li style="list-style:none;"><strong>Consulta NFT</strong></li>
+                        <li>Nombre del NFT 5 pts</li>
+                        <li>Listado de NFT 5 pts</li>
+                    </ul>
+                </td>
+                <td>10 pts</td>
+                <td>10 pts</td>
+                <td style="padding:5px;">
+                    <input onkeydown="return false" type="number" min="0" id="myInput" placeholder="Puntos Obtenidos" max="10" />
+                </td>
+            </tr>
+
+            <tr>
+                <td><strong>Reportes</strong></td>
+                <td>15 pts</td>
+                <td>15 pts</td>
+                <td style="padding:5px;">
+                    <input onkeydown="return false" type="number" min="0" id="myInput" placeholder="Puntos Obtenidos" max="15" />
+                </td>
+            </tr>
+
+            <tr>
+                <td><strong>Defensa del Proyecto</strong></td>
+                <td>5 pts</td>
+                <td>5 pts</td>
+                <td style="padding:5px;">
+                    <input onkeydown="return false" type="number" min="0" id="myInput" placeholder="Puntos Obtenidos" max="5" />
+                </td>
+            </tr>
+
+            <tr class="total-row">
+                <td>Total</td>
+                <td>100 pts</td>
+                <td>100 pts</td>
+                <td id="TotalPuntos"></td>
+            </tr>
+            <tr class="total-row">
+                <td>Porcentaje</td>
+                <td>30 %</td>
+                <td>30 %</td>
+                <td id="CalcularPromedio"></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+
+<br />
+<input type="button" value="Calcular Promedio" class="btn btn-success" onclick="calcularPromedio()">
+
+@section scripts {
+    <script>
+        function calcularPromedio() {
+            var tabla = document.getElementsByTagName('table')[0];
+            var inputsCalificacion = tabla.querySelectorAll('input[type="number"]');
+            var totalPuntos = 0;
+            var totalCalificacion = 0;
+            var todosLlenos = true;
+
+            inputsCalificacion.forEach(function (input) {
+                var puntosObtenidos = parseFloat(input.value);
+                if (isNaN(puntosObtenidos)) {
+                    todosLlenos = false;
+                } else {
+                    totalPuntos += parseFloat(input.getAttribute('max'));
+                    totalCalificacion += puntosObtenidos;
+                }
+            });
+
+            if (todosLlenos) {
+                var promedio = (totalCalificacion * 30) / totalPuntos;
+                document.getElementById('CalcularPromedio').textContent = promedio.toFixed(2) + ' %';
+                document.getElementById('TotalPuntos').textContent = totalCalificacion + ' pts';
+            } else {
+                // Mostrar toast en lugar de alerta
+                toastr.options = {
+                    "closeButton": false,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": false,
+                    "positionClass": "toast-top-center",
+                    "preventDuplicates": false,
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "5000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                };
+                toastr.warning("Por favor, llene todos los campos de calificación.", "Atención");
+            }
+        }
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
