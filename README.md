@@ -1,6 +1,6 @@
 # NFT Gallery
 
-# Description
+## Description
 
 This is a web application built with C# .NET MVC for managing NFTs and related business operations. It features a comprehensive CRUD system and supports role-based access control for secure data management. The system is designed to simulate a complete NFT sales and billing platform. The project uses Entity Framework for data access and SQL Server for the database, and is implemented using C#, HTML, CSS, JavaScript, Bootstrap, Ajax, and jQuery, as well as notification tools such as Sweet Alert and Toast. Additionally, a RESTful API was developed to allow external users to access the information.
 
